@@ -1,11 +1,11 @@
-const asyncHandler = (fn) => async (...args) => {
-    try {
-      await fn(...args);
-    } catch (error) {
-      console.error(`Error: ${error.message}`);
-      process.exit(1); // Exit process with failure
-    }
-  };
-  
-  export default asyncHandler;
-  
+const asyncHandler = (fn) => {
+    return async (req, res, next) => {
+        try {
+            await fn(req, res, next);
+        } catch (error) {
+            next(error);
+        }
+    };
+};
+
+export default asyncHandler;

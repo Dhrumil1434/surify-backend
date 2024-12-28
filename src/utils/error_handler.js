@@ -1,13 +1,5 @@
-const handleError = (res,statusCode,message)=>{
+const handleError = (res, statusCode, message) => {
+    res.status(statusCode).json({ error: message });
+};
 
-    console.error(`Error ${statusCode} : ${message}`);
-
-    return res.status(statusCode).json({
-        success: false,
-        error: {
-          code: statusCode,
-          message: message,
-        },
-      });
-    };
 export default handleError;
