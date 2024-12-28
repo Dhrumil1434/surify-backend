@@ -1,0 +1,11 @@
+{
+  "name": "surify-backend",
+  "version": "1.0.0",
+  "description": "its a backend for project surify",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "dhrumil",
+  "license": "ISC"
+}
