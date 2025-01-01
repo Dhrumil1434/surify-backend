@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 // Register User
 export const registerUser = asyncHandler(async (req, res) => {
-    const { username, email, phoneNumber, password } = req.body;
+    const { username, email, phoneNumber, password ,type} = req.body;
 
     // Check that all required fields are provided
       if (!username || !password || (!email && !phoneNumber)) {
@@ -39,13 +39,13 @@ export const registerUser = asyncHandler(async (req, res) => {
     }
 
     // Create a new user
-    const newUser = new User({ username, email, phoneNumber, password });
+    const newUser = new User({ username, email, phoneNumber, password,type });
 
     // Save the user
     await newUser.save();
 
     // Send a success response
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(201).json({ message: ` registered successfully` });
 });
 
 export const loginUser = asyncHandler(async (req,res)=>{
@@ -62,6 +62,6 @@ export const loginUser = asyncHandler(async (req,res)=>{
         return handleError(res,403,"Invalid Password");
     }
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-    res.status(200).json({ message: "Login successful", token });
+    res.status(200).json({ message: "Login successful", token , type: `${user.type}`});
 
 });

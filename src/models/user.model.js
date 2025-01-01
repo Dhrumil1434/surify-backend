@@ -35,6 +35,13 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Password is required'],
         minlength: [6, 'Password should be at least 6 characters long'], // Password length validation
       },
+      type:
+      {
+         type: String,
+         enum: ['user','artist'],
+         required : true,
+         default: 'user',
+      }
       
 },
 {timestamps : true,}
