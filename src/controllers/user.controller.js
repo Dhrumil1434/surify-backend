@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import asyncHandler from "../utils/async_handler.js";
 import handleError from "../utils/error_handler.js";
+import jwt from "jsonwebtoken";
 
 // Register User
 export const registerUser = asyncHandler(async (req, res) => {
@@ -45,4 +46,22 @@ export const registerUser = asyncHandler(async (req, res) => {
 
     // Send a success response
     res.status(201).json({ message: "User registered successfully" });
+});
+
+export const loginUser = asyncHandler(async (req,res)=>{
+    const {email,phoneNumber,password}=req.body;
+
+    const user = await User.findOne({$or : [{email},{phoneNumber}]});
+    if(!user)
+    {
+        return handleError(res,403,"User with entered email or phone number is not found ");
+    }
+    const ismatch = await user.matchPassword(password);
+    if(!ismatch)
+    {
+        return handleError(res,403,"Invalid Password");
+    }
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    res.status(200).json({ message: "Login successful", token });
+
 });
