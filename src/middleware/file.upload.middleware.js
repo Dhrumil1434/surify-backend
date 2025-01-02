@@ -3,7 +3,7 @@ import multer from "multer";
 import path from "path";
 import fs from 'fs';
 import handleError from "../utils/error_handler.js";
-
+import authMiddleware from "./authMiddleware.js";
 // Set up the upload directory
 const uploadDir = './public/uploads/';  // Make sure this path is correct
 
@@ -41,5 +41,13 @@ const upload = multer({
   }
 });
 
+const artistUploadMiddleware = [authMiddleware,(req,res,next)=>{
+ if(req.user.type !== 'artist')
+ {
+  return handleError(res, 403, "Only artists can upload music files.");
+ }
+ next();
+}];
+
 // Export the `upload` middleware to be used in the route
-export { upload };
+export { upload , artistUploadMiddleware };

@@ -1,5 +1,5 @@
 import express from 'express';
-import {upload} from '../middleware/file.upload.middleware.js';
+import {upload,artistUploadMiddleware} from '../middleware/file.upload.middleware.js';
 import path from 'path';
 import fs from 'fs';
 import handleError from '../utils/error_handler.js';
@@ -7,7 +7,8 @@ import multer from 'multer';
 
 const router = express.Router();
 
-router.post('/upload',upload.single('music_file'),(req,res)=>
+
+router.post('/upload',artistUploadMiddleware,upload.single('music_file'),(req,res)=>
 {
     if(!req.file)
     {
@@ -31,7 +32,7 @@ router.use((err, req, res, next) => {
   }
 
   // For any other unexpected errors, send a generic error message
-  return handleError(res, 500, 'Something went wrong during file upload.');
+  return handleError(res, 500, ` ${err.message} Something went wrong during file upload.`);
 });
 
 export default router;
